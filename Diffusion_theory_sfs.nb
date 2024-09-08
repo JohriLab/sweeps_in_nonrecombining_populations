@@ -1,15 +1,16 @@
-N1 = 1000;
-mu = 10^-7;
-L = 100000;
-theta = 4 N1 mu L;
+N1 = 1000; (* population size *)
+mu = 10^-7; (* mutation rate *)
+L = 100000;  (* length of the genome *)
+theta = 4 N1 mu L; 
 N1 = 1000; s = 0.1; h = 0.2; x0 = 1/(2 2 h s N1);
+(* below is single locus equation *)
 x1 = NDSolveValue[{D[x2a[t], t] == 
      s*x2a[t]*(1 - x2a[t]) (x2a[t] + h (1 - 2 x2a[t])), x2a[0] == x0},
-    x2a, {t, 0, 1500}];
-
+    x2a, {t, 0, 1500}]; 
+(* fixation time for dominance *)
 tfix = Log[2 2 N1 s  ]/(h  s (1 - h)) + (
   EulerGamma + (2 - 3 h) Log[h] + (3 h - 1) Log[1 - h])/(h  s (1 - h))
-
+(* diffusion equation numerical solution *)
 G = NDSolveValue[{D[g[x, t], 
       t] == (x (1 - x))/(4 N1*x1[t]) D[g[x, t], x, x], g[1, t] == 0, 
     g[0, t] == x1[t] theta (1 - Exp[-10000000 t]), g[x, 0] == 0}, 
