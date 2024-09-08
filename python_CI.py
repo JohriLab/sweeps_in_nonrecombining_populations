@@ -65,10 +65,10 @@ if __name__=="__main__":
             with open(file_path,'r'):
                 obj=sfs(file_path)
                 loaded_data=obj.load_data() # get the data
-                loaded_data_2=loaded_data[loaded_data['m']=='m1'] # filtered the m1s (neutrals) from the output
-                count_ones=loaded_data_2['freq'].tolist() # count # of ones at each locus
-                histogram=obj.create_histogram(count_ones) # make the histogram (SFS) of the above
-                normalized_histogram=obj.normalize_histogram(histogram,N1) # do normalization of SFS
+                loaded_data_2=loaded_data[loaded_data['m']=='m1'] 
+                count_ones=loaded_data_2['freq'].tolist() 
+                histogram=obj.create_histogram(count_ones) 
+                normalized_histogram=obj.normalize_histogram(histogram,N1) 
                 for k in range(2*N1+1):
                     total_histogram[k]+=normalized_histogram[k]
                 total_files+=1
