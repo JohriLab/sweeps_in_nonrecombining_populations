@@ -66,10 +66,10 @@ if __name__=="__main__":
 			with open(file_path,'r'):
 				obj=sfs(file_path)
 				loaded_data=obj.load_data() # get the data
-				loaded_data_1=obj.load_data_1(loaded_data) # filter subpop from the data
-				count_ones=obj.count_ones_func(loaded_data_1) # count # of ones at each locus
-				histogram=obj.create_histogram(count_ones) # make the histogram (SFS) of the above
-				normalized_histogram=obj.normalize_histogram(histogram,N1) # do normalization of SFS
+				loaded_data_1=obj.load_data_1(loaded_data) 
+				count_ones=obj.count_ones_func(loaded_data_1) 
+				histogram=obj.create_histogram(count_ones) 
+				normalized_histogram=obj.normalize_histogram(histogram,N1) 
 				for k in range(2*N1+1):
 					total_histogram[k]+=normalized_histogram[k]
 				total_files+=1
