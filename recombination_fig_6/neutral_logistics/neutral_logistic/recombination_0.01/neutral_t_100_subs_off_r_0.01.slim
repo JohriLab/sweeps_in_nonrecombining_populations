@@ -1,0 +1,50 @@
+initialize() 
+{
+			defineGlobal("N", 1000);
+    		defineGlobal("L", 10000);
+		   defineGlobal("mu", 1e-7);
+		   defineGlobal("recomb", 0.01);
+         
+         initializeMutationType("m1", 0.5, "f", 0.0);
+         
+         initializeGenomicElementType("g1", m1, 1);
+         initializeGenomicElement(g1, 1, L);
+         
+			initializeRecombinationRate(recomb);
+         initializeMutationRate(mu);
+         
+         pop_size = readFile("average_frequency.txt");
+         pop_size = asFloat(pop_size);
+
+         defineConstant("Pop_size", pop_size);
+       	m1.mutationStackPolicy = "f";
+       	
+}
+
+1 early() 
+{
+			defineConstant("simID", getSeed());
+         sim.addSubpop("p1", 1);
+         
+}
+
+1 late() 
+{
+			sim.outputFull(tempdir() + "slim_" + simID + ".txt");
+        
+}
+
+
+1:100 late()
+{
+			cat("population size is "+ round(2*1000*Pop_size[sim.cycle])+ "\n");
+			p11=asInteger( round(2*1000*Pop_size[sim.cycle]));
+			p1.setSubpopulationSize(p11);
+			//sim.addSubpop("p1", N_size );
+			if(sim.cycle==(100))
+			{			
+				p1.individuals.genomes.outputMS();
+			
+        		sim.simulationFinished();
+			}     
+}

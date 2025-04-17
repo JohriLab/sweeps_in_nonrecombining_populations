@@ -1,0 +1,62 @@
+#!/bin/bash
+
+#SBATCH --mail-user=sackau@unc.edu
+#SBATCH --mail-type=ALL
+#SBATCH -p general
+#SBATCH -N 1
+#SBATCH -t 00-72:00:00
+#SBATCH --mem=2g
+#SBATCH -a 1-1000
+#SBATCH -n 1
+#SBATCH -o /nas/longleaf/home/sackau/LOGFILES/Ns_10/test_%A_%a.o
+#SBATCH -e /nas/longleaf/home/sackau/LOGFILES/Ns_10/test_%A_%a.e
+
+if [[ -z "$SLURM_ARRAY_TASK_ID" ]]; then
+   echo "SLURM_ARRAY_TASK_ID is not set!"
+   exit 1
+fi
+
+# Calculate start and end for the loop based on SLURM_ARRAY_TASK_ID
+
+CHUNK_SIZE=1000
+echo "SLURM_ARRAY_TASK_ID: $SLURM_ARRAY_TASK_ID"
+echo "CHUNK_SIZE: $CHUNK_SIZE"
+START=$(( ($SLURM_ARRAY_TASK_ID - 1) * $CHUNK_SIZE + 1))
+ END=$(($SLURM_ARRAY_TASK_ID * $CHUNK_SIZE))
+
+ echo "Start: $START"
+ echo "End: $END"
+# Adjust END for the last chunk
+if [ "$SLURM_ARRAY_TASK_ID" -eq 1000 ]; then
+    END=1000000
+fi
+cd /work/users/s/a/sackau/UNC_work/time_dependent/Ns_100/Ns_100_subs_1_off/t_100/neutral_logistic/recombination_0
+module load slim
+output_dir="/work/users/s/a/sackau/UNC_work/time_dependent/Ns_100/Ns_100_subs_1_off/t_100/neutral_logistic/recombination_0/dist_txt_files_t_100/$SLURM_ARRAY_TASK_ID"
+mkdir -p "$output_dir"
+for ((i = $START; i <= $END; i++)); do
+
+# Reset SECONDS to start counting from 0
+SECONDS=0
+
+    # Record start time for this iteration
+    iteration_start_time=$SECONDS
+    
+    # Create a unique output file name
+    output_file="$output_dir/output_t_100_subs_off_${i}.txt"
+    
+    # If i=1, save the full output as well
+    if [ "$SLURM_ARRAY_TASK_ID" -eq 1 ] && [ "$i" -eq 1 ]; then
+        slim neutral_t_100_subs_off_r_0.0.slim > "/work/users/s/a/sackau/UNC_work/time_dependent/Ns_100/Ns_100_subs_1_off/t_100/neutral_logistic/recombination_0/dist_txt_files_t_100/full_output_1.txt" 
+    else
+        # For other iterations, process as before
+        slim neutral_t_100_subs_off_r_0.0.slim  > "$output_file"
+    fi
+    
+    # Calculate iteration elapsed time
+    iteration_elapsed_time=$(( SECONDS - iteration_start_time ))
+    
+    echo "Iteration $i completed in $iteration_elapsed_time seconds. Total elapsed: $SECONDS seconds."
+
+done
+echo "All iterations completed."

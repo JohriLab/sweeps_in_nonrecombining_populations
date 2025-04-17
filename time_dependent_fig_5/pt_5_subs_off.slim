@@ -1,0 +1,63 @@
+initialize() 
+{
+         initializeMutationRate(1e-7);
+         initializeMutationType("m1", 0.5, "f", 0.0);
+         initializeMutationType("m2", 0.5, "f", 0.1);  // introduced mutation
+         initializeGenomicElementType("g1", m1, 1);
+         initializeGenomicElement(g1, 0, 1000000);
+         initializeRecombinationRate(0);
+       	m1.mutationStackPolicy = "f";
+       	m2.mutationStackPolicy = "f";
+       	m2.convertToSubstitution = F;
+       	//m1.convertToSubstitution = F;
+}
+
+1 early() 
+{
+			defineConstant("simID", getSeed());
+         sim.addSubpop("p1", 1000);
+}
+
+10 late() 
+{
+			sim.outputFull(tempdir() + "slim_" + simID + ".txt");
+        // introduce the sweep mutation
+        target = sample(p1.genomes, 1);
+        
+        target.addNewDrawnMutation(m2, 0); // only one mutation is added at position 0
+}
+
+
+10:11000 late()
+{
+			g = p1.genomesNonNull;
+			//print(size(g));
+			if(sum(g.mutations.position == 0) ==1000)
+			{
+				p1.individuals.genomes.outputMS();
+				if (sum(g.mutations.position == 0) / size(g)==1)
+        {
+          cat(simID + ": FIXED \n");
+        }
+        cat(sum(g.mutations.position == 0) / size(g) + ": freq \n");
+        sim.simulationFinished();
+			}
+        if (sum(g.mutations.position == 0) / size(g)==0)
+        {
+          //cat(simID + ": LOST – RESTARTING\n");
+          sim.readFromPopulationFile(tempdir() + "slim_" + simID + ".txt");
+          setSeed(rdunif(1, 0, asInteger(2^62) - 1));
+          target = sample(p1.genomes, 1);  
+          target.addNewDrawnMutation(m2, 0);
+        }
+        g = p1.genomesNonNull;
+        if (sum(g.mutations.position == 0)> 1000)
+        {
+          cat(simID + ": LOST not hitting 1000– RESTARTING\n");
+          sim.readFromPopulationFile(tempdir() + "slim_" + simID + ".txt");
+          setSeed(rdunif(1, 0, asInteger(2^62) - 1));
+          target = sample(p1.genomes, 1);  
+          target.addNewDrawnMutation(m2, 0);
+        }
+       
+}
