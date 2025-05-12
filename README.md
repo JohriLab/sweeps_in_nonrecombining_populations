@@ -15,15 +15,14 @@
 
 >> python_CI.py script generate the SFS for clonal interference case.
 
-For each file
-The running script process is same
+For all cases, the following set of steps are followed:
 
-Step 1: 
-Run the bash file for slim gui
-It will run replicates of slim code, and store the information in a file, there will be 1000 folder with 1000 replicates each, meaning we have 10^6 replicates
+>> Step 1: 
+Run the bash file for SLiM
+The bash script will run replicates of the SLiM script, and store the information in a 1000 folders with 1000 replicates each, with a total of 10^6 independent replicates.
 
-Step 2:
-Run the bash file written for python code to generate the SFS
+>> Step 2:
+Run the bash file written using python to generate the population SFS for each replicate.
 
-Step 3:
-Average the SFS generated in the previous step by the python script
+>> Step 3:
+Average the SFS (generated in the previous step) over all replicates using this python script.
