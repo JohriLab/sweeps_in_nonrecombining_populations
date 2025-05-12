@@ -1,20 +1,19 @@
 # Here are all the scripts and code used to perform analyses in the manuscript entitled "Genetic diversity during selective sweeps in non-recombining populations" by Sachin Kaushik, Kavita Jain, and Parul Johri.
 #The manuscript can be accessed here - https://www.biorxiv.org/content/10.1101/2024.09.12.612756v1.abstract
 
-#Below is the description of all folders present here:
+#Below is the description of all files/folders present here:
 
-CI.slim file is the simulations method for clonal interference simulations, and simulations methods details are provided in the method section of main paper. 
+>> CI.slim file is the simulation script to obtain an SFS post-fixation of a beneficial mutation when there is clonal interference. 
 
-Diffusion_theory_sfs.nb is the file where the diffusion equations framework is provided to obtain the sfs. Further details are present in each folder in the respective mathematica file.
+>> Diffusion_theory_sfs.nb is the mathematica file where the diffusion equations framework is provided to obtain the SFS. Further details are present in each folder in the respective mathematica file.
 
-Ns_100_post_fixation_recombination.slim has the simulation methods for the recombination section and the further method details are present in main paper.
+>> Ns_100_post_fixation_recombination.slim is the SLiM script to simulate a selective sweep conditional on fixation in a recombining population.
 
+>> post_fix.slim is the SLiM script to simulate a selective sweep conditional on fixation in a nonrecombining population. More specific details are within the each folder where simulations are done for each figure.
 
-post_fix.slim has the simulations methods for post fixation sfs, more specific details are within the each folder where simulations are done for each figure.
+>> post_fix_python.py is a python script that was used to obtain the SFS from SLiM's output, where particularly all 10^6 simulation replicates (txt files) are processed.
 
-post_fix_python.py has the python method to obtain the SFS, where particularly the all 10^6 txt files are processed and obtained the SFS.
-
-python_CI.py script generate the SFS for clonal interference case.
+>> python_CI.py script generate the SFS for clonal interference case.
 
 For each file
 The running script process is same
