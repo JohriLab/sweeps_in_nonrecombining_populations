@@ -1,7 +1,7 @@
 # Here are all the scripts and code used to perform analyses in the manuscript entitled "Genetic diversity during selective sweeps in non-recombining populations" by Sachin Kaushik, Kavita Jain, and Parul Johri.
 #The manuscript can be accessed here - https://www.biorxiv.org/content/10.1101/2024.09.12.612756v1.abstract
 
-#Below is the description of all files/folders present here:
+#Below is the description of all files present here:
 
 >> CI.slim file is the simulation script to obtain an SFS post-fixation of a beneficial mutation when there is clonal interference. 
 
@@ -26,3 +26,5 @@ Run the bash file written using python to generate the population SFS for each r
 
 >> Step 3:
 Average the SFS (generated in the previous step) over all replicates using this python script.
+
+Note that all folders here contain the specific scripts used to generate a particular figure (as indicated in the folder name).
